@@ -61,6 +61,28 @@ section h2 {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
+/* Content Checker Section */
+.content-checker-section {
+    background: linear-gradient(135deg, #fef5e7 0%, #f9e79f 100%);
+}
+
+.content-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #f39c12;
+    border-radius: 5px;
+    font-size: 1em;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s ease;
+    resize: vertical;
+}
+
+.content-input:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 10px rgba(243, 156, 18, 0.4);
+}
+
 .input-group {
     display: flex;
     gap: 10px;

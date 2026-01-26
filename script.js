@@ -382,14 +382,254 @@ function showResult(message, level, resultBox) {
     resultBox.className = `result-box ${level}`;
 }
 
-// Xử lý sự kiện Enter khi nhập link
+// ========== CONTENT ANALYSIS MODEL ==========
+const contentAnalyzer = {
+    // Từ khóa cảnh báo cao (tin giả thường dùng)
+    highRiskPhrases: [
+        'they don\'t want you to know',
+        'experts shocked',
+        'shocking truth',
+        'doctors hate this',
+        'you won\'t believe',
+        'one weird trick',
+        'health officials warn',
+        'government conspiracy',
+        'banned by',
+        'will be deleted',
+        'before it\'s too late',
+        'spread this before',
+        'don\'t share',
+        'illuminati',
+        'new world order',
+        'big pharma',
+        'deep state',
+        'sự thật bị che giấu',
+        'bạn sẽ sốc',
+        'đừng chia sẻ',
+        'trước khi bị xóa',
+        'họ không muốn'
+    ],
+
+    // Từ khóa cảnh báo vừa
+    mediumRiskPhrases: [
+        'exclusive',
+        'breaking',
+        'shocking',
+        'unbelievable',
+        'must watch',
+        'must read',
+        'urgent',
+        'alert',
+        'warning',
+        'scandal',
+        'không thể tin',
+        'độc quyền',
+        'khẩn cấp'
+    ],
+
+    // Từ khóa chính thức
+    legitimatePhrases: [
+        'according to',
+        'research shows',
+        'study found',
+        'data indicates',
+        'evidence suggests',
+        'official statement',
+        'spokesperson said',
+        'analysis shows',
+        'investigation reveals',
+        'sources confirm',
+        'theo nghiên cứu',
+        'dữ liệu cho thấy',
+        'bằng chứng',
+        'thống kê'
+    ],
+
+    analyzeContent: function(text) {
+        let score = 50;
+        let details = [];
+        let warnings = [];
+
+        const textLower = text.toLowerCase();
+        const wordCount = text.trim().split(/\\s+/).length;
+        const charCount = text.length;
+
+        // 1. Độ dài bài viết
+        if (wordCount < 20) {
+            score -= 20;
+            warnings.push('Bài viết quá ngắn (dưới 20 từ)');
+        } else if (wordCount < 50) {
+            score -= 10;
+            warnings.push('Bài viết khá ngắn - thiếu chi tiết');
+        } else {
+            score += 5;
+            details.push('✓ Độ dài bài viết hợp lý (+ 5 điểm)');
+        }
+
+        // 2. Từ khóa cao nguy hiểm
+        let highRiskCount = 0;
+        this.highRiskPhrases.forEach(phrase => {
+            if (textLower.includes(phrase.toLowerCase())) {
+                highRiskCount++;
+            }
+        });
+
+        if (highRiskCount > 0) {
+            score -= (highRiskCount * 8);
+            warnings.push(`⚠️ Phát hiện ${highRiskCount} cụm từ cảnh báo cao (- ${highRiskCount * 8} điểm)`);
+        }
+
+        // 3. Từ khóa vừa nguy hiểm
+        let mediumRiskCount = 0;
+        this.mediumRiskPhrases.forEach(phrase => {
+            if (textLower.includes(phrase.toLowerCase())) {
+                mediumRiskCount++;
+            }
+        });
+
+        if (mediumRiskCount > 0) {
+            score -= (mediumRiskCount * 2);
+            warnings.push(`? Phát hiện ${mediumRiskCount} từ khóa cảnh báo (- ${mediumRiskCount * 2} điểm)`);
+        }
+
+        // 4. Từ khóa chính thức
+        let legitimateCount = 0;
+        this.legitimatePhrases.forEach(phrase => {
+            if (textLower.includes(phrase.toLowerCase())) {
+                legitimateCount++;
+            }
+        });
+
+        if (legitimateCount > 0) {
+            score += (legitimateCount * 4);
+            details.push(`✓ Phát hiện ${legitimateCount} cụm từ chính thức (+ ${legitimateCount * 4} điểm)`);
+        }
+
+        // 5. Dấu chấm than và viết hoa
+        const exclamationCount = (text.match(/!/g) || []).length;
+        const allCapsWords = (text.match(/\\b[A-Z]{2,}\\b/g) || []).length;
+
+        if (exclamationCount > wordCount / 10) {
+            score -= 10;
+            warnings.push('⚠️ Quá nhiều dấu chấm than - kích động cảm xúc');
+        }
+
+        if (allCapsWords > wordCount / 20) {
+            score -= 8;
+            warnings.push('⚠️ Quá nhiều chữ hoa');
+        }
+
+        // 6. Từ vừa hồ
+        const vagueWords = ['possibly', 'maybe', 'allegedly', 'reportedly', 'rumor', 'có thể', 'nghe nói'];
+        let vagueCount = 0;
+        vagueWords.forEach(word => {
+            if (textLower.includes(word.toLowerCase())) {
+                vagueCount++;
+            }
+        });
+
+        if (vagueCount > 3) {
+            score -= 8;
+            warnings.push('⚠️ Quá nhiều từ vừa hồ - thiếu bằng chứng');
+        }
+
+        // 7. Liên kết
+        const linkCount = (text.match(/http/gi) || []).length;
+        if (linkCount > 0) {
+            score += 5;
+            details.push(`✓ Có ${linkCount} liên kết tham khảo (+ 5 điểm)`);
+        } else {
+            score -= 5;
+            warnings.push('✗ Không có liên kết hoặc nguồn');
+        }
+
+        // 8. Số liệu
+        const hasNumbers = /\\d+(%|\\$|€|\\.|,\\d)?/g.test(text);
+        if (hasNumbers) {
+            score += 3;
+            details.push('✓ Có số liệu/thống kê (+ 3 điểm)');
+        } else {
+            score -= 3;
+            warnings.push('? Không có số liệu cụ thể');
+        }
+
+        score = Math.max(0, Math.min(100, score));
+
+        return { score, wordCount, charCount, details, warnings, highRiskCount, mediumRiskCount, legitimateCount };
+    }
+};
+
+function checkContent() {
+    const newsContent = document.getElementById('newsContent').value.trim();
+    const resultBox = document.getElementById('contentResult');
+
+    if (!newsContent) {
+        showResult('Vui lòng nhập nội dung!', 'warning', resultBox);
+        return;
+    }
+
+    if (newsContent.length < 50) {
+        showResult('Nội dung quá ngắn (tối thiểu 50 ký tự)!', 'warning', resultBox);
+        return;
+    }
+
+    const analysis = contentAnalyzer.analyzeContent(newsContent);
+    let level = 'danger';
+    let levelText = '🚫 Không đáng tin cậy';
+
+    if (analysis.score >= 75) {
+        level = 'safe';
+        levelText = '✅ Nội dung đáng tin cậy';
+    } else if (analysis.score >= 50) {
+        level = 'warning';
+        levelText = '⚠️ Cần kiểm tra thêm';
+    }
+
+    const resultMessage = `
+        <div style="margin-bottom: 20px; padding: 15px; background-color: rgba(255,255,255,0.7); border-radius: 8px;">
+            <div style="margin-bottom: 10px;">
+                <strong style="font-size: 1.3em;">Kết Quả: ${levelText}</strong>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <strong>Điểm: ${analysis.score}/100</strong>
+                <div style="background-color: #e9ecef; border-radius: 5px; overflow: hidden; margin-top: 8px; height: 25px;">
+                    <div style="width: ${analysis.score}%; height: 100%; background: linear-gradient(90deg, #dc3545, #ffc107, #28a745); display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; color: white; font-weight: bold;">${analysis.score}%</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+            <div style="background: #e3f2fd; padding: 10px; border-radius: 5px;"><div style="color: #1565c0; font-size: 0.9em;">Từ:</div><div style="font-size: 1.3em; font-weight: bold; color: #1565c0;">${analysis.wordCount}</div></div>
+            <div style="background: #e8f5e9; padding: 10px; border-radius: 5px;"><div style="color: #2e7d32; font-size: 0.9em;">Ký tự:</div><div style="font-size: 1.3em; font-weight: bold; color: #2e7d32;">${analysis.charCount}</div></div>
+            <div style="background: #fce4ec; padding: 10px; border-radius: 5px;"><div style="color: #880e4f; font-size: 0.9em;">Cảnh báo:</div><div style="font-size: 1.3em; font-weight: bold; color: #880e4f;">${analysis.highRiskCount}</div></div>
+        </div>
+
+        ${analysis.details.length > 0 ? `<div style="margin-top: 15px;"><strong>✓ Điểm Tích Cực:</strong><ul style="margin-top: 10px; padding-left: 0; list-style: none;">${analysis.details.map(d => `<li style="padding: 6px; margin-bottom: 4px; background: #f8f9fa; border-left: 3px solid #4CAF50;">${d}</li>`).join('')}</ul></div>` : ''}
+
+        ${analysis.warnings.length > 0 ? `<div style="margin-top: 15px;"><strong>⚠️ Cảnh Báo:</strong><ul style="margin-top: 10px; padding-left: 0; list-style: none;">${analysis.warnings.map(w => `<li style="padding: 6px; margin-bottom: 4px; background: #fff3cd; border-left: 3px solid #ffc107;">${w}</li>`).join('')}</ul></div>` : ''}
+
+        <div style="margin-top: 15px; padding: 12px; background: #f8f9fa; border-left: 5px solid #667eea; border-radius: 5px;">
+            <strong>💡 Kết Luận:</strong>
+            <p style="margin: 8px 0 0 0;">${analysis.score >= 75 ? '✅ Bài viết có dấu hiệu chất lượng. Kiểm tra thêm từ các nguồn khác.' : analysis.score >= 50 ? '⚠️ Nội dung có dấu hiệu đáng ngờ. Hãy kiểm tra kỹ lưỡng trước khi tin tưởng.' : '🚨 CẢNH BÁO! Nội dung có nhiều dấu hiệu tin giả. Không nên chia sẻ mà chưa xác minh.'}</p>
+        </div>
+    `;
+
+    showResult(resultMessage, level, resultBox);
+}
+
+// Xử lý sự kiện
 document.addEventListener('DOMContentLoaded', function() {
     const newsLink = document.getElementById('newsLink');
     if (newsLink) {
         newsLink.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkNews();
-            }
+            if (e.key === 'Enter') checkNews();
+        });
+    }
+
+    const newsContent = document.getElementById('newsContent');
+    if (newsContent) {
+        newsContent.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) checkContent();
         });
     }
 });

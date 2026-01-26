@@ -16,7 +16,7 @@
         <main>
             <!-- Phần Kiểm Tra Link -->
             <section class="checker-section">
-                <h2>Kiểm Tra Bài Báo</h2>
+                <h2>🔗 Kiểm Tra Đường Dẫn Bài Báo</h2>
                 <div class="input-group">
                     <input 
                         type="url" 
@@ -24,9 +24,24 @@
                         placeholder="Nhập đường dẫn bài báo (ví dụ: https://example.com/news)"
                         class="input-field"
                     >
-                    <button onclick="checkNews()" class="btn-check">Kiểm Tra</button>
+                    <button onclick="checkNews()" class="btn-check">Kiểm Tra URL</button>
                 </div>
                 <div id="result" class="result-box hidden"></div>
+            </section>
+
+            <!-- Phần Kiểm Tra Nội Dung -->
+            <section class="content-checker-section">
+                <h2>📝 Kiểm Tra Nội Dung Bài Báo</h2>
+                <div style="margin-bottom: 15px;">
+                    <textarea 
+                        id="newsContent" 
+                        placeholder="Dán nội dung bài báo hoặc thông tin muốn kiểm tra (tối thiểu 50 ký tự)..."
+                        class="content-input"
+                        rows="6"
+                    ></textarea>
+                </div>
+                <button onclick="checkContent()" class="btn-check">Phân Tích Nội Dung</button>
+                <div id="contentResult" class="result-box hidden"></div>
             </section>
 
             <!-- Phần Thuật Ngữ -->
