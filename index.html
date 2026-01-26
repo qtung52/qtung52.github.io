@@ -25,6 +25,7 @@
                         class="input-field"
                     >
                     <button onclick="checkNews()" class="btn-check">Kiểm Tra URL</button>
+                    <button id="clearBtn" onclick="document.getElementById('result').className='result-box hidden'; document.getElementById('contentResult').className='result-box hidden'; document.getElementById('newsLink').value=''; document.getElementById('newsContent').value='';" class="btn-clear">🗑️ Xóa</button>
                 </div>
                 <div id="result" class="result-box hidden"></div>
             </section>

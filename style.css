@@ -125,6 +125,27 @@ section h2 {
     transform: translateY(0);
 }
 
+.btn-clear {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-clear:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+}
+
+.btn-clear:active {
+    transform: translateY(0);
+}
+
 .result-box {
     padding: 20px;
     border-radius: 5px;
