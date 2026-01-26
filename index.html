@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm Tra Tin Giả - Fake News Checker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Kiểm Tra Tin Giả</h1>
+            <p class="subtitle">Xác minh tính xác thực của bài báo</p>
+        </header>
+
+        <main>
+            <!-- Phần Kiểm Tra Link -->
+            <section class="checker-section">
+                <h2>Kiểm Tra Bài Báo</h2>
+                <div class="input-group">
+                    <input 
+                        type="url" 
+                        id="newsLink" 
+                        placeholder="Nhập đường dẫn bài báo (ví dụ: https://example.com/news)"
+                        class="input-field"
+                    >
+                    <button onclick="checkNews()" class="btn-check">Kiểm Tra</button>
+                </div>
+                <div id="result" class="result-box hidden"></div>
+            </section>
+
+            <!-- Phần Thuật Ngữ -->
+            <section class="terminology-section">
+                <h2>Thuật Ngữ Nhận Biết Tin Giả</h2>
+                <div class="terminology-grid">
+                    <div class="term-card">
+                        <h3>📌 Clickbait</h3>
+                        <p>Tiêu đề hấp dẫn, kích động cảm xúc để lôi kéo người dùng nhấp vào mà không quan tâm đến nội dung thực.</p>
+                        <p class="example"><strong>Ví dụ:</strong> "Bạn sẽ sốc khi biết..."</p>
+                    </div>
+
+                    <div class="term-card">
+                        <h3>🔴 Misinformation</h3>
+                        <p>Thông tin sai sự thật hoặc gây hiểu lầm, được chia sẻ mà không có ý định lừa dối.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Chia sẻ tin tức cũ như tin mới</p>
+                    </div>
+
+                    <div class="term-card">
+                        <h3>🚩 Disinformation</h3>
+                        <p>Thông tin sai sự thật được phát tán có chủ đích để lừa dối và gây ảnh hưởng tiêu cực.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Các tin tức được chế tạo để ảnh hưởng chính trị</p>
+                    </div>
+
+                    <div class="term-card">
+                        <h3>✓ Fact-Checking</h3>
+                        <p>Quá trình xác minh tính chính xác của thông tin bằng cách kiểm tra các nguồn đáng tin cậy.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Kiểm tra thông tin qua các trang tin học đáng tin cậy</p>
+                    </div>
+
+                    <div class="term-card">
+                        <h3>🎭 Deepfake</h3>
+                        <p>Nội dung video hoặc âm thanh được tổng hợp bằng AI, có vẻ như thực nhưng thực chất là giả mạo.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Video giả mạo nhân vật nổi tiếng</p>
+                    </div>
+
+                    <div class="term-card">
+                        <h3>📰 Source Bias</h3>
+                        <p>Khi một nguồn tin có xu hướng nghiêng về một phía chính trị hoặc quan điểm cụ thể.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Các tờ báo chỉ đưa tin có lợi cho một đảng phái</p>
+                    </div>
+
+                    <div class="term-card">
+                        <h3>🔗 Satire/Parody</h3>
+                        <p>Những bài viết mang tính châm biếm hoặc hài hước, được tạo ra để phê bình hoặc tơi tả thực tế.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Các bài viết trên các trang satire như The Onion</p>
+                    </div>
+
+                    <div class="term-card">
+                        <h3>🎨 Manipulated Media</h3>
+                        <p>Hình ảnh, video hoặc âm thanh được chỉnh sửa để thay đổi ngữ cảnh hoặc ý nghĩa gốc.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Ảnh bị cắt xén để che giấu bối cảnh thực tế</p>
+                    </div>
+
+                    <div class="term-card">
+                        <h3>🔍 Sensationalism</h3>
+                        <p>Cách trình bày tin tức theo cách quá phóng đại, kích động cảm xúc thay vì trung thực.</p>
+                        <p class="example"><strong>Ví dụ:</strong> "Thảm họa tận thế xảy ra ngay bây giờ!"</p>
+                    </div>
+
+                    <div class="term-card">
+                        <h3>❓ Hoax</h3>
+                        <p>Thông tin hoàn toàn bịa đặt được tạo ra để lừa dối hoặc gây nhầm lẫn công chúng.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Tin đồn về một sự kiện không bao giờ xảy ra</p>
+                    </div>
+
+                    <div class="term-card">
+                        <h3>🤖 Bot/Troll Farm</h3>
+                        <p>Các tài khoản tự động hoặc nhân viên được thuê để phát tán tin giả hoặc tấn công mạng xã hội.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Hàng ngàn tài khoản giả chia sẻ cùng một bài viết trong vài phút</p>
+                    </div>
+
+                    <div class="term-card">
+                        <h3>🔐 Conspiracy Theory</h3>
+                        <p>Lý thuyết giải thích các sự kiện bằng cách cho rằng có một nhóm bí mật đang kiểm soát mọi thứ.</p>
+                        <p class="example"><strong>Ví dụ:</strong> "Chính phủ đang che giấu sự thật về..."</p>
+                    </div>
+
+                    <div class="term-card">
+                        <h3>📲 Echo Chamber</h3>
+                        <p>Môi trường online nơi bạn chỉ thấy ý kiến đồng ý với bạn, làm tăng niềm tin vào sai lầm.</p>
+                        <p class="example"><strong>Ví dụ:</strong> Theo dõi chỉ những người có cùng quan điểm chính trị</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phần Số Liệu Thống Kê -->
+            <section class="statistics-section">
+                <h2>📊 Số Liệu Về Tin Giả Trên Thế Giới</h2>
+                <div class="statistics-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">62%</div>
+                        <p>Tỷ lệ người dùng Internet toàn cầu từng tiếp xúc với tin giả trong 1 tháng qua</p>
+                        <p class="stat-source">Nguồn: Reuters Institute, 2024</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-number">84%</div>
+                        <p>Người dùng mạng xã hội không thể phân biệt tin giả với tin tức thực trước khi chia sẻ</p>
+                        <p class="stat-source">Nguồn: Stanford Internet Observatory, 2023</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-number">4 giây</div>
+                        <p>Thời gian trung bình mà mọi người mất để quyết định có chia sẻ bài viết hay không</p>
+                        <p class="stat-source">Nguồn: Princeton Media Lab, 2024</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-number">2,263%</div>
+                        <p>Mức tăng số lượng tin giả liên quan đến sức khỏe trong giai đoạn dịch bệnh</p>
+                        <p class="stat-source">Nguồn: WHO, 2024</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-number">73%</div>
+                        <p>Tin giả có xu hướng được chia sẻ nhiều hơn tin tức chính xác trên mạng xã hội</p>
+                        <p class="stat-source">Nguồn: MIT Media Lab, 2023</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-number">1 triệu</div>
+                        <p>Số lượng tin tức được xuất bản hàng ngày trên toàn cầu (bao gồm cả tin giả)</p>
+                        <p class="stat-source">Nguồn: UN Report, 2024</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-number">$14 tỷ</div>
+                        <p>Tổng thiệt hại kinh tế hàng năm do tin giả gây ra trên toàn thế giới</p>
+                        <p class="stat-source">Nguồn: World Economic Forum, 2024</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-number">91%</div>
+                        <p>Tin tức được chia sẻ trên mạng xã hội không bao giờ được đọc đầy đủ trước khi chia sẻ</p>
+                        <p class="stat-source">Nguồn: Pew Research Center, 2023</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phần Hướng Dẫn -->
+            <section class="tips-section">
+                <h2>💡 Cách Nhận Biết Tin Giả</h2>
+                <ul class="tips-list">
+                    <li><strong>Kiểm tra nguồn:</strong> Xem bài báo đến từ trang web nào, đó có phải là nguồn đáng tin cậy không?</li>
+                    <li><strong>Xem tác giả:</strong> Bài viết có tác giả cụ thể không? Tác giả có danh tiếng không?</li>
+                    <li><strong>Tìm bằng chứng:</strong> Bài báo có cung cấp bằng chứng, dữ liệu, hay chỉ là ý kiến?</li>
+                    <li><strong>Kiểm tra ngày đăng:</strong> Bài viết cũ hay mới? Có phải tin cũ được chia sẻ lại không?</li>
+                    <li><strong>Tìm tin tương tự:</strong> Các nguồn tin khác có đưa tin về sự kiện này không?</li>
+                    <li><strong>Xem ảnh/video:</strong> Hình ảnh hay video có thực sự liên quan đến bài viết không?</li>
+                    <li><strong>Cảnh báo với headline:</strong> Tiêu đề quá chắc chắn, quá cơn hay quá dễ gây xúc động?</li>
+                </ul>
+            </section>
+
+            <!-- Phần Tài Liệu Tham Khảo -->
+            <section class="resources-section">
+                <h2>📚 Tài Liệu Tham Khảo</h2>
+                <div class="resources-list">
+                    <a href="https://vnexpress.net" target="_blank" class="resource-link">VNExpress - Tin tức Việt Nam</a>
+                    <a href="https://tuoitre.vn" target="_blank" class="resource-link">Tuổi Trẻ Online</a>
+                    <a href="https://dantri.com.vn" target="_blank" class="resource-link">Dân Trí</a>
+                    <a href="https://snopes.com" target="_blank" class="resource-link">Snopes - Fact-Checking Quốc tế</a>
+                    <a href="https://www.politifact.com" target="_blank" class="resource-link">PolitiFact - Xác minh tuyên bố chính trị</a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Kiểm Tra Tin Giả. Giúp bạn xác minh thông tin và chống lại tin giả.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
