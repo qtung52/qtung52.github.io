@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiểm Tra Tin Giả - Fake News Checker</title>
+    <title>Trợ Lý Tin Tức Sinh Viên - Student News Assistant</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
         <header>
-            <h1>🔍 Kiểm Tra Tin Giả</h1>
-            <p class="subtitle">Xác minh tính xác thực của bài báo</p>
+            <h1>🎓 Trợ Lý Tin Tức Sinh Viên</h1>
+            <p class="subtitle">Công cụ hỗ trợ sinh viên đánh giá nguồn tin học thuật & đời sống</p>
         </header>
 
         <main>
@@ -18,14 +20,12 @@
             <section class="checker-section">
                 <h2>🔗 Kiểm Tra Đường Dẫn Bài Báo</h2>
                 <div class="input-group">
-                    <input 
-                        type="url" 
-                        id="newsLink" 
-                        placeholder="Nhập đường dẫn bài báo (ví dụ: https://example.com/news)"
-                        class="input-field"
-                    >
+                    <input type="url" id="newsLink"
+                        placeholder="Nhập đường dẫn bài báo (ví dụ: https://example.com/news)" class="input-field">
                     <button onclick="checkNews()" class="btn-check">Kiểm Tra URL</button>
-                    <button id="clearBtn" onclick="document.getElementById('result').className='result-box hidden'; document.getElementById('contentResult').className='result-box hidden'; document.getElementById('newsLink').value=''; document.getElementById('newsContent').value='';" class="btn-clear">🗑️ Xóa</button>
+                    <button id="clearBtn"
+                        onclick="document.getElementById('result').className='result-box hidden'; document.getElementById('contentResult').className='result-box hidden'; document.getElementById('newsLink').value=''; document.getElementById('newsContent').value='';"
+                        class="btn-clear">🗑️ Xóa</button>
                 </div>
                 <div id="result" class="result-box hidden"></div>
             </section>
@@ -34,12 +34,9 @@
             <section class="content-checker-section">
                 <h2>📝 Kiểm Tra Nội Dung Bài Báo</h2>
                 <div style="margin-bottom: 15px;">
-                    <textarea 
-                        id="newsContent" 
+                    <textarea id="newsContent"
                         placeholder="Dán nội dung bài báo hoặc thông tin muốn kiểm tra (tối thiểu 50 ký tự)..."
-                        class="content-input"
-                        rows="6"
-                    ></textarea>
+                        class="content-input" rows="6"></textarea>
                 </div>
                 <button onclick="checkContent()" class="btn-check">Phân Tích Nội Dung</button>
                 <div id="contentResult" class="result-box hidden"></div>
@@ -51,7 +48,8 @@
                 <div class="terminology-grid">
                     <div class="term-card">
                         <h3>📌 Clickbait</h3>
-                        <p>Tiêu đề hấp dẫn, kích động cảm xúc để lôi kéo người dùng nhấp vào mà không quan tâm đến nội dung thực.</p>
+                        <p>Tiêu đề hấp dẫn, kích động cảm xúc để lôi kéo người dùng nhấp vào mà không quan tâm đến nội
+                            dung thực.</p>
                         <p class="example"><strong>Ví dụ:</strong> "Bạn sẽ sốc khi biết..."</p>
                     </div>
 
@@ -69,13 +67,16 @@
 
                     <div class="term-card">
                         <h3>✓ Fact-Checking</h3>
-                        <p>Quá trình xác minh tính chính xác của thông tin bằng cách kiểm tra các nguồn đáng tin cậy.</p>
-                        <p class="example"><strong>Ví dụ:</strong> Kiểm tra thông tin qua các trang tin học đáng tin cậy</p>
+                        <p>Quá trình xác minh tính chính xác của thông tin bằng cách kiểm tra các nguồn đáng tin cậy.
+                        </p>
+                        <p class="example"><strong>Ví dụ:</strong> Kiểm tra thông tin qua các trang tin học đáng tin cậy
+                        </p>
                     </div>
 
                     <div class="term-card">
                         <h3>🎭 Deepfake</h3>
-                        <p>Nội dung video hoặc âm thanh được tổng hợp bằng AI, có vẻ như thực nhưng thực chất là giả mạo.</p>
+                        <p>Nội dung video hoặc âm thanh được tổng hợp bằng AI, có vẻ như thực nhưng thực chất là giả
+                            mạo.</p>
                         <p class="example"><strong>Ví dụ:</strong> Video giả mạo nhân vật nổi tiếng</p>
                     </div>
 
@@ -87,7 +88,8 @@
 
                     <div class="term-card">
                         <h3>🔗 Satire/Parody</h3>
-                        <p>Những bài viết mang tính châm biếm hoặc hài hước, được tạo ra để phê bình hoặc tơi tả thực tế.</p>
+                        <p>Những bài viết mang tính châm biếm hoặc hài hước, được tạo ra để phê bình hoặc tơi tả thực
+                            tế.</p>
                         <p class="example"><strong>Ví dụ:</strong> Các bài viết trên các trang satire như The Onion</p>
                     </div>
 
@@ -111,20 +113,24 @@
 
                     <div class="term-card">
                         <h3>🤖 Bot/Troll Farm</h3>
-                        <p>Các tài khoản tự động hoặc nhân viên được thuê để phát tán tin giả hoặc tấn công mạng xã hội.</p>
-                        <p class="example"><strong>Ví dụ:</strong> Hàng ngàn tài khoản giả chia sẻ cùng một bài viết trong vài phút</p>
+                        <p>Các tài khoản tự động hoặc nhân viên được thuê để phát tán tin giả hoặc tấn công mạng xã hội.
+                        </p>
+                        <p class="example"><strong>Ví dụ:</strong> Hàng ngàn tài khoản giả chia sẻ cùng một bài viết
+                            trong vài phút</p>
                     </div>
 
                     <div class="term-card">
                         <h3>🔐 Conspiracy Theory</h3>
-                        <p>Lý thuyết giải thích các sự kiện bằng cách cho rằng có một nhóm bí mật đang kiểm soát mọi thứ.</p>
+                        <p>Lý thuyết giải thích các sự kiện bằng cách cho rằng có một nhóm bí mật đang kiểm soát mọi
+                            thứ.</p>
                         <p class="example"><strong>Ví dụ:</strong> "Chính phủ đang che giấu sự thật về..."</p>
                     </div>
 
                     <div class="term-card">
                         <h3>📲 Echo Chamber</h3>
                         <p>Môi trường online nơi bạn chỉ thấy ý kiến đồng ý với bạn, làm tăng niềm tin vào sai lầm.</p>
-                        <p class="example"><strong>Ví dụ:</strong> Theo dõi chỉ những người có cùng quan điểm chính trị</p>
+                        <p class="example"><strong>Ví dụ:</strong> Theo dõi chỉ những người có cùng quan điểm chính trị
+                        </p>
                     </div>
                 </div>
             </section>
@@ -187,13 +193,18 @@
             <section class="tips-section">
                 <h2>💡 Cách Nhận Biết Tin Giả</h2>
                 <ul class="tips-list">
-                    <li><strong>Kiểm tra nguồn:</strong> Xem bài báo đến từ trang web nào, đó có phải là nguồn đáng tin cậy không?</li>
-                    <li><strong>Xem tác giả:</strong> Bài viết có tác giả cụ thể không? Tác giả có danh tiếng không?</li>
-                    <li><strong>Tìm bằng chứng:</strong> Bài báo có cung cấp bằng chứng, dữ liệu, hay chỉ là ý kiến?</li>
-                    <li><strong>Kiểm tra ngày đăng:</strong> Bài viết cũ hay mới? Có phải tin cũ được chia sẻ lại không?</li>
+                    <li><strong>Kiểm tra nguồn:</strong> Xem bài báo đến từ trang web nào, đó có phải là nguồn đáng tin
+                        cậy không?</li>
+                    <li><strong>Xem tác giả:</strong> Bài viết có tác giả cụ thể không? Tác giả có danh tiếng không?
+                    </li>
+                    <li><strong>Tìm bằng chứng:</strong> Bài báo có cung cấp bằng chứng, dữ liệu, hay chỉ là ý kiến?
+                    </li>
+                    <li><strong>Kiểm tra ngày đăng:</strong> Bài viết cũ hay mới? Có phải tin cũ được chia sẻ lại không?
+                    </li>
                     <li><strong>Tìm tin tương tự:</strong> Các nguồn tin khác có đưa tin về sự kiện này không?</li>
                     <li><strong>Xem ảnh/video:</strong> Hình ảnh hay video có thực sự liên quan đến bài viết không?</li>
-                    <li><strong>Cảnh báo với headline:</strong> Tiêu đề quá chắc chắn, quá cơn hay quá dễ gây xúc động?</li>
+                    <li><strong>Cảnh báo với headline:</strong> Tiêu đề quá chắc chắn, quá cơn hay quá dễ gây xúc động?
+                    </li>
                 </ul>
             </section>
 
@@ -201,11 +212,14 @@
             <section class="resources-section">
                 <h2>📚 Tài Liệu Tham Khảo</h2>
                 <div class="resources-list">
-                    <a href="https://vnexpress.net" target="_blank" class="resource-link">VNExpress - Tin tức Việt Nam</a>
+                    <a href="https://vnexpress.net" target="_blank" class="resource-link">VNExpress - Tin tức Việt
+                        Nam</a>
                     <a href="https://tuoitre.vn" target="_blank" class="resource-link">Tuổi Trẻ Online</a>
                     <a href="https://dantri.com.vn" target="_blank" class="resource-link">Dân Trí</a>
-                    <a href="https://snopes.com" target="_blank" class="resource-link">Snopes - Fact-Checking Quốc tế</a>
-                    <a href="https://www.politifact.com" target="_blank" class="resource-link">PolitiFact - Xác minh tuyên bố chính trị</a>
+                    <a href="https://snopes.com" target="_blank" class="resource-link">Snopes - Fact-Checking Quốc
+                        tế</a>
+                    <a href="https://www.politifact.com" target="_blank" class="resource-link">PolitiFact - Xác minh
+                        tuyên bố chính trị</a>
                 </div>
             </section>
         </main>
@@ -217,4 +231,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
