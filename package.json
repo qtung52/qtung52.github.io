@@ -1,0 +1,12 @@
+{
+  "name": "student-news-assistant",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Student News Assistant with backend OpenRouter integration",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

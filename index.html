@@ -23,9 +23,7 @@
                     <input type="url" id="newsLink"
                         placeholder="Nhập đường dẫn bài báo (ví dụ: https://example.com/news)" class="input-field">
                     <button onclick="checkNews()" class="btn-check">Kiểm Tra URL</button>
-                    <button id="clearBtn"
-                        onclick="document.getElementById('result').className='result-box hidden'; document.getElementById('contentResult').className='result-box hidden'; document.getElementById('newsLink').value=''; document.getElementById('newsContent').value='';"
-                        class="btn-clear">🗑️ Xóa</button>
+                    <button id="clearBtn" onclick="clearAllFields()" class="btn-clear">🗑️ Xóa</button>
                 </div>
                 <div id="result" class="result-box hidden"></div>
             </section>
@@ -37,6 +35,18 @@
                     <textarea id="newsContent"
                         placeholder="Dán nội dung bài báo hoặc thông tin muốn kiểm tra (tối thiểu 50 ký tự)..."
                         class="content-input" rows="6"></textarea>
+                </div>
+                <div class="api-config">
+                    <h3>Cấu hình OpenRouter (qua backend)</h3>
+                    <div class="api-row">
+                        <label for="openRouterModel">Model</label>
+                        <input type="text" id="openRouterModel" class="input-field"
+                            value="openai/gpt-4o-mini" placeholder="vd: anthropic/claude-3.5-sonnet">
+                    </div>
+                    <label class="api-toggle">
+                        <input type="checkbox" id="useOpenRouter">
+                        <span>Bật đánh giá bổ sung bằng OpenRouter (key nằm backend)</span>
+                    </label>
                 </div>
                 <button onclick="checkContent()" class="btn-check">Phân Tích Nội Dung</button>
                 <div id="contentResult" class="result-box hidden"></div>
